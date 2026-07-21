@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="SisTriage.API/SisTriage.API.csproj" Id="0fd7906f-0f6f-43d0-ab85-3a69af67cd4e" />
+  <Project Path="SisTriage.Application/SisTriage.Application.csproj" Id="b753e85b-e1f6-4736-a907-acdc2fc978cd" />
+  <Project Path="SisTriage.Domain/SisTriage.Domain.csproj" Id="94381814-2707-49d8-be0d-8162c1fa5473" />
+  <Project Path="SisTriage.Infrastructure/SisTriage.Infrastructure.csproj" Id="c06a7989-0fd4-4acb-9dc6-a68ded15bf57" />
+  <Project Path="SisTriage.Repository/SisTriage.Repository.csproj" Id="0bb6c76f-dcc1-4d12-8fef-624af8ea4aff" />
+</Solution>

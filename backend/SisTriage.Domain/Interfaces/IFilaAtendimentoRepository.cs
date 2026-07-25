@@ -4,5 +4,6 @@ namespace SisTriage.Domain.Interfaces
 {
     public interface IFilaAtendimentoRepository : IRepository<FilaAtendimento>
     {
+        Task<IEnumerable<FilaAtendimento>> ObterFilaOrdenadaPorPrioridadeAsync();
     }
 }

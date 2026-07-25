@@ -9,6 +9,8 @@
         public required string Sexo { get; set; }
         public required string Telefone { get; set; }
 
+        public ICollection<Triagem> Triagens { get; set; } = new List<Triagem>();
+
         public Paciente()
         {
             Id = Guid.NewGuid();

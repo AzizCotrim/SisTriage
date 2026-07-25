@@ -11,6 +11,8 @@ namespace SisTriage.Domain.Entities
         public Perfil Perfil { get; set; }
         public bool Ativo { get; set; }
 
+        public ICollection<Triagem> Triagens { get; set; } = new List<Triagem>();
+
         public Usuario()
         {
             Id = Guid.NewGuid();

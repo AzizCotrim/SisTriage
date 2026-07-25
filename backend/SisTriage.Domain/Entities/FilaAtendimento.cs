@@ -6,6 +6,7 @@ namespace SisTriage.Domain.Entities
     {
         public Guid Id { get; private set; }
         public required Guid TriagemId { get; set; }
+        public Triagem Triagem { get; set; } = null!;
         public required DateTime DataEntrada { get; set; }
         public DateTime? DataSaida { get; set; }
         public StatusFila Status { get; set; }

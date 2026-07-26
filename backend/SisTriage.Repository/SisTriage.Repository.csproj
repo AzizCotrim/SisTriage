@@ -11,8 +11,4 @@
     <ProjectReference Include="..\SisTriage.Infrastructure\SisTriage.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>

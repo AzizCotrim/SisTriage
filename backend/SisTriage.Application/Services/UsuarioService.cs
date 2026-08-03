@@ -12,12 +12,14 @@ namespace SisTriage.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-        public UsuarioService(IUnitOfWork unitOfWork, IMapper mapper, IPasswordHasher passwordHasher)
+        public UsuarioService(IUnitOfWork unitOfWork, IMapper mapper, IPasswordHasher passwordHasher, IJwtTokenGenerator jwtTokenGenerator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
+            _jwtTokenGenerator = jwtTokenGenerator;
         }
 
         public async Task<UsuarioResponse> CriarAsync(CriarUsuarioRequest request)
@@ -43,12 +45,7 @@ namespace SisTriage.Application.Services
             if (usuario == null || !_passwordHasher.VerificarSenha(request.Senha, usuario.SenhaHash))
                 throw new UnauthorizedAccessException("E-mail ou senha inválidos.");
 
-            return GerarToken(usuario);
-        }
-
-        private string GerarToken(Usuario usuario)
-        {
-            throw new NotImplementedException("Geração de JWT ainda não configurada.");
+            return _jwtTokenGenerator.GerarToken(usuario);
         }
     }
 }

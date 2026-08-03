@@ -16,6 +16,7 @@ namespace SisTriage.Repository.Repositories
         {
             var fila = await _dbSet
                 .Include(f => f.Triagem)
+                    .ThenInclude(t => t.Paciente)
                 .Where(f => f.Status == StatusFila.Aguardando)
                 .ToListAsync();
 

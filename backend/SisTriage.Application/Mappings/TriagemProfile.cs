@@ -10,7 +10,8 @@ namespace SisTriage.Application.Mappings
         {
             CreateMap<Triagem, TriagemResponse>();
             CreateMap<CriarTriagemRequest, Triagem>()
-                .ForMember(dest => dest.Status, opt => opt.Ignore());
+                .ForMember(dest => dest.Status, opt => opt.Ignore())
+                .ForMember(dest => dest.DataHora, opt => opt.Ignore());
         }
     }
 }

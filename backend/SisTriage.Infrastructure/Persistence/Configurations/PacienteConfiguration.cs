@@ -22,7 +22,8 @@ namespace SisTriage.Infrastructure.Persistence.Configurations
             builder.HasIndex(p => p.CPF)
                 .IsUnique();
 
-            builder.Property(p => p.DataNascimento);
+            builder.Property(p => p.DataNascimento)
+                .HasColumnType("date");
 
             builder.Property(p => p.Sexo)
                 .IsRequired()

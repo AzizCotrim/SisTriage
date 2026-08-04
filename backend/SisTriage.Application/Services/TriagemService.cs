@@ -21,6 +21,7 @@ namespace SisTriage.Application.Services
         public async Task<TriagemResponse> RegistrarAsync(CriarTriagemRequest request)
         {
             var triagem = _mapper.Map<Triagem>(request);
+            triagem.DataHora = DateTime.UtcNow;
             triagem.Status = StatusTriagem.Aguardando;
 
             _unitOfWork.Triagens.Add(triagem);

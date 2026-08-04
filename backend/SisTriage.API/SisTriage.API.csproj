@@ -15,16 +15,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Scalar.AspNetCore" Version="2.14.14" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SisTriage.Application\SisTriage.Application.csproj" />
     <ProjectReference Include="..\SisTriage.Infrastructure\SisTriage.Infrastructure.csproj" />
     <ProjectReference Include="..\SisTriage.Repository\SisTriage.Repository.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

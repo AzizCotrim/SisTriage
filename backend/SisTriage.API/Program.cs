@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
 using SisTriage.Application.Mappings;
 using SisTriage.Application.Security;
 using SisTriage.Application.Services;
@@ -10,12 +11,24 @@ using SisTriage.Infrastructure.Persistence;
 using SisTriage.Repository;
 using System.Text;
 
+const string FrontendCorsPolicy = "FrontendCorsPolicy";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(FrontendCorsPolicy, policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddAutoMapper(cfg => { }, typeof(PacienteProfile).Assembly);
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
@@ -46,6 +59,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddAuthorization();
+
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -56,9 +71,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(FrontendCorsPolicy);
 
 app.UseAuthentication();
 

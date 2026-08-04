@@ -61,7 +61,7 @@ namespace SisTriage.Infrastructure.Migrations
                         .HasColumnType("character varying(11)");
 
                     b.Property<DateTime>("DataNascimento")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("date");
 
                     b.Property<string>("Nome")
                         .IsRequired()

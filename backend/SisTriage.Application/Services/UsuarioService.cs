@@ -47,5 +47,12 @@ namespace SisTriage.Application.Services
 
             return _jwtTokenGenerator.GerarToken(usuario);
         }
+
+        public async Task<IEnumerable<UsuarioResponse>> ListarAsync()
+        {
+            var usuarios = await _unitOfWork.Usuarios.GetAllAsync();
+
+            return _mapper.Map<IEnumerable<UsuarioResponse>>(usuarios);
+        }
     }
 }

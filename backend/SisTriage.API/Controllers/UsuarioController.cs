@@ -45,5 +45,13 @@ namespace SisTriage.API.Controllers
                 return Unauthorized(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<UsuarioResponse>>> Listar()
+        {
+            var response = await _service.ListarAsync();
+            return Ok(response);
+        }
     }
 }

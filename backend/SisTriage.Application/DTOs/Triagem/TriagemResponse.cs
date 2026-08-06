@@ -11,5 +11,6 @@ namespace SisTriage.Application.DTOs.Triagem
         public ClassificacaoRisco Classificacao { get; set; }
         public required string QueixaPrincipal { get; set; }
         public StatusTriagem Status { get; set; }
+        public required SinaisVitaisResponse SinaisVitais { get; set; }
     }
 }

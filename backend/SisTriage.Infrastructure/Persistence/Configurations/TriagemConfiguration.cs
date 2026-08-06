@@ -40,6 +40,36 @@ namespace SisTriage.Infrastructure.Persistence.Configurations
             builder.Property(t => t.Status)
                 .IsRequired()
                 .HasConversion<string>();
+
+            builder.OwnsOne(t => t.SinaisVitais, sv =>
+            {
+                sv.Property(s => s.PressaoArterialSistolica)
+                    .IsRequired();
+
+                sv.Property(s => s.PressaoArterialDiastolica)
+                    .IsRequired();
+
+                sv.Property(s => s.FrequenciaCardiaca)
+                    .IsRequired();
+
+                sv.Property(s => s.FrequenciaRespiratoria)
+                    .IsRequired();
+
+                sv.Property(s => s.Temperatura)
+                    .IsRequired()
+                    .HasColumnType("numeric(4,1)");
+
+                sv.Property(s => s.SpO2)
+                    .IsRequired();
+
+                sv.Property(s => s.EscalaDor)
+                    .IsRequired();
+
+                sv.Property(s => s.Glicemia);
+
+                sv.Property(s => s.Peso)
+                    .HasColumnType("numeric(5,2)");
+            });
         }
     }
 }

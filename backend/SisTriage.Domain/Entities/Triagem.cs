@@ -1,4 +1,5 @@
 ﻿using SisTriage.Domain.Enums;
+using SisTriage.Domain.ValueObjects;
 
 namespace SisTriage.Domain.Entities
 {
@@ -13,6 +14,7 @@ namespace SisTriage.Domain.Entities
         public ClassificacaoRisco Classificacao { get; set; }
         public required string QueixaPrincipal { get; set; }
         public StatusTriagem Status { get; set; }
+        public required SinaisVitais SinaisVitais { get; set; }
 
         public Triagem()
         {

@@ -181,7 +181,50 @@ namespace SisTriage.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.OwnsOne("SisTriage.Domain.ValueObjects.SinaisVitais", "SinaisVitais", b1 =>
+                        {
+                            b1.Property<Guid>("TriagemId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("EscalaDor")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("FrequenciaCardiaca")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("FrequenciaRespiratoria")
+                                .HasColumnType("integer");
+
+                            b1.Property<int?>("Glicemia")
+                                .HasColumnType("integer");
+
+                            b1.Property<decimal?>("Peso")
+                                .HasColumnType("numeric(5,2)");
+
+                            b1.Property<int>("PressaoArterialDiastolica")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("PressaoArterialSistolica")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("SpO2")
+                                .HasColumnType("integer");
+
+                            b1.Property<decimal>("Temperatura")
+                                .HasColumnType("numeric(4,1)");
+
+                            b1.HasKey("TriagemId");
+
+                            b1.ToTable("Triagens");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TriagemId");
+                        });
+
                     b.Navigation("Paciente");
+
+                    b.Navigation("SinaisVitais")
+                        .IsRequired();
 
                     b.Navigation("Usuario");
                 });

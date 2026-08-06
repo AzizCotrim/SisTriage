@@ -14,5 +14,7 @@ namespace SisTriage.Application.DTOs.Triagem
         [Required(ErrorMessage = "A queixa principal é obrigatória.")]
         [StringLength(500, ErrorMessage = "A queixa principal deve ter no máximo 500 caracteres.")]
         public required string QueixaPrincipal { get; set; }
+
+        public required SinaisVitaisRequest SinaisVitais { get; set; }
     }
 }

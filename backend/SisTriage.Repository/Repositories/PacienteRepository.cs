@@ -1,4 +1,5 @@
-﻿using SisTriage.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SisTriage.Domain.Entities;
 using SisTriage.Domain.Interfaces;
 using SisTriage.Infrastructure.Persistence;
 using System;
@@ -11,6 +12,11 @@ namespace SisTriage.Repository.Repositories
     {
         public PacienteRepository(AppDbContext context) : base(context)
         {
+        }
+
+        public async Task<Paciente?> ObterPorCpfAsync(string cpf)
+        {
+            return await _dbSet.FirstOrDefaultAsync(p => p.CPF == cpf);
         }
     }
 }

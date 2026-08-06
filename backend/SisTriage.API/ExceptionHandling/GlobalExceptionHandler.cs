@@ -21,6 +21,7 @@ namespace SisTriage.API.ExceptionHandling
             {
                 RegistroDuplicadoException => (StatusCodes.Status409Conflict, "Registro duplicado", exception.Message),
                 CredenciaisInvalidasException => (StatusCodes.Status401Unauthorized, "Credenciais inválidas", exception.Message),
+                RecursoNaoEncontradoException => (StatusCodes.Status404NotFound, "Recurso não encontrado", exception.Message),
                 _ => (StatusCodes.Status500InternalServerError, "Erro interno no servidor", "Ocorreu um erro inesperado. Tente novamente mais tarde.")
             };
 

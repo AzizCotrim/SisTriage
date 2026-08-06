@@ -6,5 +6,6 @@ namespace SisTriage.Application.Services.Interfaces
     {
         Task<IEnumerable<FilaAtendimentoResponse>> ObterFilaOrdenadaAsync();
         Task<FilaAtendimentoResponse?> ChamarProximoAsync();
+        Task<FilaAtendimentoResponse> FinalizarAsync(Guid filaAtendimentoId);
     }
 }

@@ -24,5 +24,13 @@ namespace SisTriage.Repository.Repositories
                 .OrderBy(f => f.Triagem.Classificacao.TempoMaximoEsperaMinutos())
                 .ThenBy(f => f.DataEntrada);
         }
+
+        public async Task<FilaAtendimento?> ObterComTriagemEPacienteAsync(Guid id)
+        {
+            return await _dbSet
+                .Include(f => f.Triagem)
+                    .ThenInclude(t => t.Paciente)
+                .FirstOrDefaultAsync(f => f.Id == id);
+        }
     }
 }

@@ -33,5 +33,12 @@ namespace SisTriage.API.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("{id}/finalizar")]
+        public async Task<ActionResult<FilaAtendimentoResponse>> Finalizar(Guid id)
+        {
+            var response = await _service.FinalizarAsync(id);
+            return Ok(response);
+        }
     }
 }

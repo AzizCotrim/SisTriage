@@ -2,6 +2,7 @@ using AutoMapper;
 using SisTriage.Application.DTOs.FilaAtendimento;
 using SisTriage.Application.Services.Interfaces;
 using SisTriage.Domain.Enums;
+using SisTriage.Domain.Exceptions;
 using SisTriage.Domain.Interfaces;
 
 namespace SisTriage.Application.Services
@@ -38,6 +39,24 @@ namespace SisTriage.Application.Services
             await _unitOfWork.SalvarAsync();
 
             return _mapper.Map<FilaAtendimentoResponse>(proximo);
+        }
+
+        public async Task<FilaAtendimentoResponse> FinalizarAsync(Guid filaAtendimentoId)
+        {
+            var filaAtendimento = await _unitOfWork.Filas.ObterComTriagemEPacienteAsync(filaAtendimentoId);
+            if (filaAtendimento == null)
+                throw new RecursoNaoEncontradoException("Registro de fila não encontrado.");
+
+            if (filaAtendimento.Status != StatusFila.Chamado)
+                throw new OperacaoInvalidaException("Só é possível finalizar um atendimento que já foi chamado.");
+
+            filaAtendimento.Status = StatusFila.Atendido;
+            filaAtendimento.DataSaida = DateTime.UtcNow;
+            filaAtendimento.Triagem.Status = StatusTriagem.Finalizada;
+
+            await _unitOfWork.SalvarAsync();
+
+            return _mapper.Map<FilaAtendimentoResponse>(filaAtendimento);
         }
     }
 }

@@ -2,6 +2,7 @@
 using SisTriage.Application.DTOs.Paciente;
 using SisTriage.Application.Services.Interfaces;
 using SisTriage.Domain.Entities;
+using SisTriage.Domain.Exceptions;
 using SisTriage.Domain.Interfaces;
 
 namespace SisTriage.Application.Services
@@ -19,6 +20,10 @@ namespace SisTriage.Application.Services
 
         public async Task<PacienteResponse> CriarAsync(CriarPacienteRequest request)
         {
+            var pacienteExistente = await _unitOfWork.Pacientes.ObterPorCpfAsync(request.CPF);
+            if (pacienteExistente != null)
+                throw new RegistroDuplicadoException("Já existe um paciente cadastrado com esse CPF.");
+
             var paciente = _mapper.Map<Paciente>(request);
 
             _unitOfWork.Pacientes.Add(paciente);

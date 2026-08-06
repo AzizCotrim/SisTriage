@@ -3,6 +3,7 @@ using SisTriage.Application.DTOs.Triagem;
 using SisTriage.Application.Services.Interfaces;
 using SisTriage.Domain.Entities;
 using SisTriage.Domain.Enums;
+using SisTriage.Domain.Exceptions;
 using SisTriage.Domain.Interfaces;
 
 namespace SisTriage.Application.Services
@@ -20,6 +21,14 @@ namespace SisTriage.Application.Services
 
         public async Task<TriagemResponse> RegistrarAsync(CriarTriagemRequest request)
         {
+            var paciente = await _unitOfWork.Pacientes.GetByIdAsync(request.PacienteId);
+            if (paciente == null)
+                throw new RecursoNaoEncontradoException("Paciente não encontrado.");
+
+            var usuario = await _unitOfWork.Usuarios.GetByIdAsync(request.UsuarioId);
+            if (usuario == null)
+                throw new RecursoNaoEncontradoException("Usuário não encontrado.");
+
             var triagem = _mapper.Map<Triagem>(request);
             triagem.DataHora = DateTime.UtcNow;
             triagem.Status = StatusTriagem.Aguardando;

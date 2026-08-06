@@ -3,6 +3,7 @@ using SisTriage.Application.DTOs.Usuario;
 using SisTriage.Application.Security;
 using SisTriage.Application.Services.Interfaces;
 using SisTriage.Domain.Entities;
+using SisTriage.Domain.Exceptions;
 using SisTriage.Domain.Interfaces;
 
 namespace SisTriage.Application.Services
@@ -26,7 +27,7 @@ namespace SisTriage.Application.Services
         {
             var usuarioExistente = await _unitOfWork.Usuarios.ObterPorEmailAsync(request.Email);
             if (usuarioExistente != null)
-                throw new InvalidOperationException("Já existe um usuário cadastrado com esse e-mail.");
+                throw new RegistroDuplicadoException("Já existe um usuário cadastrado com esse e-mail.");
 
             var usuario = _mapper.Map<Usuario>(request);
             usuario.SenhaHash = _passwordHasher.HashSenha(request.Senha);
@@ -43,7 +44,7 @@ namespace SisTriage.Application.Services
             var usuario = await _unitOfWork.Usuarios.ObterPorEmailAsync(request.Email);
 
             if (usuario == null || !_passwordHasher.VerificarSenha(request.Senha, usuario.SenhaHash))
-                throw new UnauthorizedAccessException("E-mail ou senha inválidos.");
+                throw new CredenciaisInvalidasException("E-mail ou senha inválidos.");
 
             return _jwtTokenGenerator.GerarToken(usuario);
         }

@@ -20,30 +20,16 @@ namespace SisTriage.API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<UsuarioResponse>> Criar(CriarUsuarioRequest request)
         {
-            try
-            {
-                var response = await _service.CriarAsync(request);
-                return StatusCode(StatusCodes.Status201Created, response);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Conflict(ex.Message);
-            }
+            var response = await _service.CriarAsync(request);
+            return StatusCode(StatusCodes.Status201Created, response);
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<ActionResult> Login(LoginRequest request)
         {
-            try
-            {
-                var token = await _service.AutenticarAsync(request);
-                return Ok(new { token });
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                return Unauthorized(ex.Message);
-            }
+            var token = await _service.AutenticarAsync(request);
+            return Ok(new { token });
         }
 
         [HttpGet]

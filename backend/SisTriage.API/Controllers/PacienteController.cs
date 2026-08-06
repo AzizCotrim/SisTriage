@@ -18,6 +18,7 @@ namespace SisTriage.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Recepcionista,Enfermeiro")]
         public async Task<ActionResult<PacienteResponse>> Criar(CriarPacienteRequest request)
         {
             var response = await _service.CriarAsync(request);

@@ -25,6 +25,7 @@ namespace SisTriage.API.Controllers
         }
 
         [HttpPost("chamar-proximo")]
+        [Authorize(Roles = "Enfermeiro,Medico")]
         public async Task<ActionResult<FilaAtendimentoResponse>> ChamarProximo()
         {
             var response = await _service.ChamarProximoAsync();
@@ -35,6 +36,7 @@ namespace SisTriage.API.Controllers
         }
 
         [HttpPost("{id}/finalizar")]
+        [Authorize(Roles = "Medico")]
         public async Task<ActionResult<FilaAtendimentoResponse>> Finalizar(Guid id)
         {
             var response = await _service.FinalizarAsync(id);

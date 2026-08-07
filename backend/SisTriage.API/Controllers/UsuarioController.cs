@@ -18,7 +18,7 @@ namespace SisTriage.API.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Recepcionista")]
         public async Task<ActionResult<UsuarioResponse>> Criar(CriarUsuarioRequest request)
         {
             var response = await _service.CriarAsync(request);

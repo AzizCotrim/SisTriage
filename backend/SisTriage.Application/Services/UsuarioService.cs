@@ -46,6 +46,9 @@ namespace SisTriage.Application.Services
             if (usuario == null || !_passwordHasher.VerificarSenha(request.Senha, usuario.SenhaHash))
                 throw new CredenciaisInvalidasException("E-mail ou senha inválidos.");
 
+            if (!usuario.Ativo)
+                throw new CredenciaisInvalidasException("Usuário inativo.");
+
             return _jwtTokenGenerator.GerarToken(usuario);
         }
 

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using SisTriage.API.ExceptionHandling;
+using SisTriage.API.Seed;
 using SisTriage.Application.Mappings;
 using SisTriage.Application.Security;
 using SisTriage.Application.Services;
@@ -70,6 +71,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+await DbSeeder.SeedUsuarioInicialAsync(app.Services);
 
 app.UseExceptionHandler();
 

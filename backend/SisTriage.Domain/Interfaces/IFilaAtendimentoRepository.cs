@@ -1,4 +1,5 @@
 ﻿using SisTriage.Domain.Entities;
+using SisTriage.Domain.Enums;
 
 namespace SisTriage.Domain.Interfaces
 {
@@ -6,5 +7,6 @@ namespace SisTriage.Domain.Interfaces
     {
         Task<IEnumerable<FilaAtendimento>> ObterFilaOrdenadaPorPrioridadeAsync();
         Task<FilaAtendimento?> ObterComTriagemEPacienteAsync(Guid id);
+        Task<IEnumerable<FilaAtendimento>> ObterPorStatusAsync(StatusFila status);
     }
 }

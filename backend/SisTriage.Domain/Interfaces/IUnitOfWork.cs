@@ -6,6 +6,7 @@
         IPacienteRepository Pacientes { get; }
         ITriagemRepository Triagens { get; }
         IFilaAtendimentoRepository Filas { get; }
+        ILogAuditoriaRepository LogsAuditoria { get; }
 
         Task<int> SalvarAsync();
     }

@@ -13,6 +13,7 @@ namespace SisTriage.Infrastructure.Persistence
         public DbSet<Usuario> Usuarios { get; set; } = null!;
         public DbSet<Triagem> Triagens { get; set; } = null!;
         public DbSet<FilaAtendimento> FilaAtendimentos { get; set; } = null!;
+        public DbSet<LogAuditoria> LogsAuditoria { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

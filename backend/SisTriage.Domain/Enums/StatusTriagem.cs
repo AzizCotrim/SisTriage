@@ -4,6 +4,7 @@
     {
         Aguardando,
         EmAtendimento,
-        Finalizada
+        Finalizada,
+        Cancelada
     }
 }

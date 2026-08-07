@@ -58,5 +58,30 @@ namespace SisTriage.Application.Services
 
             return _mapper.Map<FilaAtendimentoResponse>(filaAtendimento);
         }
+
+        public async Task<FilaAtendimentoResponse> RegistrarNaoComparecimentoAsync(Guid filaAtendimentoId)
+        {
+            var filaAtendimento = await _unitOfWork.Filas.ObterComTriagemEPacienteAsync(filaAtendimentoId);
+            if (filaAtendimento == null)
+                throw new RecursoNaoEncontradoException("Registro de fila não encontrado.");
+
+            if (filaAtendimento.Status != StatusFila.Chamado)
+                throw new OperacaoInvalidaException("Só é possível registrar não comparecimento de um paciente que já foi chamado.");
+
+            filaAtendimento.Status = StatusFila.NaoCompareceu;
+            filaAtendimento.DataSaida = DateTime.UtcNow;
+            filaAtendimento.Triagem.Status = StatusTriagem.Cancelada;
+
+            await _unitOfWork.SalvarAsync();
+
+            return _mapper.Map<FilaAtendimentoResponse>(filaAtendimento);
+        }
+
+        public async Task<IEnumerable<FilaAtendimentoResponse>> ObterNaoAtendidosAsync()
+        {
+            var naoAtendidos = await _unitOfWork.Filas.ObterPorStatusAsync(StatusFila.NaoCompareceu);
+
+            return _mapper.Map<IEnumerable<FilaAtendimentoResponse>>(naoAtendidos);
+        }
     }
 }

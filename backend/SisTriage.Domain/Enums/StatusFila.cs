@@ -4,6 +4,7 @@
     {
         Aguardando,
         Chamado,
-        Atendido
+        Atendido,
+        NaoCompareceu
     }
 }

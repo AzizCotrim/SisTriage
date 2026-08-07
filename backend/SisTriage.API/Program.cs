@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using SisTriage.API.ExceptionHandling;
+using SisTriage.API.Security;
 using SisTriage.API.Seed;
+using SisTriage.Infrastructure.Persistence.Interceptors;
 using SisTriage.Application.Mappings;
 using SisTriage.Application.Security;
 using SisTriage.Application.Services;
@@ -19,8 +21,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUsuarioLogado, UsuarioLogado>();
+builder.Services.AddScoped<AuditoriaInterceptor>();
+
+builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+           .AddInterceptors(serviceProvider.GetRequiredService<AuditoriaInterceptor>()));
 
 builder.Services.AddCors(options =>
 {

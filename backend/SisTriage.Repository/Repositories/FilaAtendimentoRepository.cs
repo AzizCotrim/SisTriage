@@ -32,5 +32,15 @@ namespace SisTriage.Repository.Repositories
                     .ThenInclude(t => t.Paciente)
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
+
+        public async Task<IEnumerable<FilaAtendimento>> ObterPorStatusAsync(StatusFila status)
+        {
+            return await _dbSet
+                .Include(f => f.Triagem)
+                    .ThenInclude(t => t.Paciente)
+                .Where(f => f.Status == status)
+                .OrderByDescending(f => f.DataEntrada)
+                .ToListAsync();
+        }
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SisTriage.Application.DTOs.Usuario;
 using SisTriage.Application.Services.Interfaces;
+using System.Security.Claims;
 
 namespace SisTriage.API.Controllers
 {
@@ -37,6 +38,21 @@ namespace SisTriage.API.Controllers
         public async Task<ActionResult<IEnumerable<UsuarioResponse>>> Listar()
         {
             var response = await _service.ListarAsync();
+            return Ok(response);
+        }
+
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<ActionResult<UsuarioResponse>> ObterUsuarioLogado()
+        {
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (idClaim == null || !Guid.TryParse(idClaim, out var id))
+                return Unauthorized();
+
+            var response = await _service.ObterPorIdAsync(id);
+            if (response == null)
+                return NotFound();
+
             return Ok(response);
         }
     }

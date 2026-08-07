@@ -7,5 +7,6 @@ namespace SisTriage.Application.Services.Interfaces
         Task<UsuarioResponse> CriarAsync(CriarUsuarioRequest request);
         Task<string> AutenticarAsync(LoginRequest request);
         Task<IEnumerable<UsuarioResponse>> ListarAsync();
+        Task<UsuarioResponse?> ObterPorIdAsync(Guid id);
     }
 }

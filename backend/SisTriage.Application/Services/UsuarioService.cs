@@ -55,5 +55,12 @@ namespace SisTriage.Application.Services
 
             return _mapper.Map<IEnumerable<UsuarioResponse>>(usuarios);
         }
+
+        public async Task<UsuarioResponse?> ObterPorIdAsync(Guid id)
+        {
+            var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
+
+            return usuario == null ? null : _mapper.Map<UsuarioResponse>(usuario);
+        }
     }
 }

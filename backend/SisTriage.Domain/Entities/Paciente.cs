@@ -1,4 +1,6 @@
-﻿namespace SisTriage.Domain.Entities
+﻿using SisTriage.Domain.Enums;
+
+namespace SisTriage.Domain.Entities
 {
     public class Paciente
     {
@@ -6,7 +8,7 @@
         public required string Nome { get; set; }
         public required string CPF { get; set; }
         public DateTime DataNascimento { get; set; }
-        public required string Sexo { get; set; }
+        public required Sexo Sexo { get; set; }
         public required string Telefone { get; set; }
         public string? Alergias { get; set; }
 

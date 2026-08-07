@@ -39,11 +39,11 @@ namespace SisTriage.Application.Services
             return paciente == null ? null : _mapper.Map<PacienteResponse>(paciente);
         }
 
-        public async Task<IEnumerable<PacienteResponse>> ListarAsync()
+        public async Task<IEnumerable<PacienteListaResponse>> ListarAsync()
         {
             var pacientes = await _unitOfWork.Pacientes.GetAllAsync();
 
-            return _mapper.Map<IEnumerable<PacienteResponse>>(pacientes);
+            return _mapper.Map<IEnumerable<PacienteListaResponse>>(pacientes);
         }
 
         public async Task<PacienteResponse> AtualizarAsync(Guid id, AtualizarPacienteRequest request)

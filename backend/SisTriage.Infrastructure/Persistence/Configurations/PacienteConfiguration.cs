@@ -27,7 +27,8 @@ namespace SisTriage.Infrastructure.Persistence.Configurations
 
             builder.Property(p => p.Sexo)
                 .IsRequired()
-                .HasMaxLength(9);
+                .HasMaxLength(9)
+                .HasConversion<string>();
 
             builder.Property(p => p.Telefone)
                 .IsRequired()

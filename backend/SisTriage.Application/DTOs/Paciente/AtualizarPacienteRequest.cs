@@ -1,3 +1,4 @@
+using SisTriage.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace SisTriage.Application.DTOs.Paciente
@@ -8,9 +9,8 @@ namespace SisTriage.Application.DTOs.Paciente
         [StringLength(255, ErrorMessage = "O nome deve ter no máximo 255 caracteres.")]
         public required string Nome { get; set; }
 
-        [Required]
-        [StringLength(9)]
-        public required string Sexo { get; set; }
+        [EnumDataType(typeof(Sexo), ErrorMessage = "Sexo inválido.")]
+        public required Sexo Sexo { get; set; }
 
         [Required]
         [StringLength(13)]

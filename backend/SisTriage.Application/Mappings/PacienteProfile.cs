@@ -10,6 +10,12 @@ namespace SisTriage.Application.Mappings
         {
             CreateMap<Paciente, PacienteResponse>();
             CreateMap<CriarPacienteRequest, Paciente>();
+
+            CreateMap<Paciente, PacienteListaResponse>()
+                .ForMember(dest => dest.CPF, opt => opt.MapFrom(src =>
+                    src.CPF.Length == 11
+                        ? "***." + src.CPF.Substring(3, 3) + "." + src.CPF.Substring(6, 3) + "-**"
+                        : "***.***.***-**"));
         }
     }
 }

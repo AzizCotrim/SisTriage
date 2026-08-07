@@ -22,5 +22,8 @@ namespace SisTriage.Application.DTOs.Paciente
         [Required]
         [StringLength(13)]
         public required string Telefone { get; set; }
+
+        [StringLength(500, ErrorMessage = "As alergias devem ter no máximo 500 caracteres.")]
+        public string? Alergias { get; set; }
     }
 }

@@ -45,5 +45,21 @@ namespace SisTriage.Application.Services
 
             return _mapper.Map<IEnumerable<PacienteResponse>>(pacientes);
         }
+
+        public async Task<PacienteResponse> AtualizarAsync(Guid id, AtualizarPacienteRequest request)
+        {
+            var paciente = await _unitOfWork.Pacientes.GetByIdAsync(id);
+            if (paciente == null)
+                throw new RecursoNaoEncontradoException("Paciente não encontrado.");
+
+            paciente.Nome = request.Nome;
+            paciente.Sexo = request.Sexo;
+            paciente.Telefone = request.Telefone;
+            paciente.Alergias = request.Alergias;
+
+            await _unitOfWork.SalvarAsync();
+
+            return _mapper.Map<PacienteResponse>(paciente);
+        }
     }
 }

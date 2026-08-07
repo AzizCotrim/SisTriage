@@ -7,5 +7,6 @@ namespace SisTriage.Application.Services.Interfaces
         Task<PacienteResponse> CriarAsync(CriarPacienteRequest request);
         Task<PacienteResponse?> ObterPorIdAsync(Guid id);
         Task<IEnumerable<PacienteResponse>> ListarAsync();
+        Task<PacienteResponse> AtualizarAsync(Guid id, AtualizarPacienteRequest request);
     }
 }

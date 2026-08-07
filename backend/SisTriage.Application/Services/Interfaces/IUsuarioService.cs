@@ -8,5 +8,6 @@ namespace SisTriage.Application.Services.Interfaces
         Task<string> AutenticarAsync(LoginRequest request);
         Task<IEnumerable<UsuarioResponse>> ListarAsync();
         Task<UsuarioResponse?> ObterPorIdAsync(Guid id);
+        Task<UsuarioResponse> AtualizarAsync(Guid id, AtualizarUsuarioRequest request);
     }
 }

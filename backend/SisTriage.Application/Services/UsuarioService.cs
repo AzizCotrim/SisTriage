@@ -62,5 +62,20 @@ namespace SisTriage.Application.Services
 
             return usuario == null ? null : _mapper.Map<UsuarioResponse>(usuario);
         }
+
+        public async Task<UsuarioResponse> AtualizarAsync(Guid id, AtualizarUsuarioRequest request)
+        {
+            var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
+            if (usuario == null)
+                throw new RecursoNaoEncontradoException("Usuário não encontrado.");
+
+            usuario.Nome = request.Nome;
+            usuario.Perfil = request.Perfil;
+            usuario.Ativo = request.Ativo;
+
+            await _unitOfWork.SalvarAsync();
+
+            return _mapper.Map<UsuarioResponse>(usuario);
+        }
     }
 }

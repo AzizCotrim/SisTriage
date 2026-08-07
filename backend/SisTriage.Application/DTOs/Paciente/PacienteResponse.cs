@@ -8,5 +8,6 @@
         public DateTime DataNascimento { get; set; }
         public required string Sexo { get; set; }
         public required string Telefone { get; set; }
+        public string? Alergias { get; set; }
     }
 }

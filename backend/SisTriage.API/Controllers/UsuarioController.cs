@@ -55,5 +55,13 @@ namespace SisTriage.API.Controllers
 
             return Ok(response);
         }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<ActionResult<UsuarioResponse>> Atualizar(Guid id, AtualizarUsuarioRequest request)
+        {
+            var response = await _service.AtualizarAsync(id, request);
+            return Ok(response);
+        }
     }
 }

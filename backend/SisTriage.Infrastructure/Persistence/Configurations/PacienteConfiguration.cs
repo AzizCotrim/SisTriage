@@ -33,6 +33,9 @@ namespace SisTriage.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(13);
 
+            builder.Property(p => p.Alergias)
+                .HasMaxLength(500);
+
         }
     }
 }

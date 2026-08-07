@@ -55,6 +55,10 @@ namespace SisTriage.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Alergias")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
                     b.Property<string>("CPF")
                         .IsRequired()
                         .HasMaxLength(11)

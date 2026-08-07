@@ -49,6 +49,44 @@ namespace SisTriage.Infrastructure.Migrations
                     b.ToTable("FilaAtendimentos", (string)null);
                 });
 
+            modelBuilder.Entity("SisTriage.Domain.Entities.LogAuditoria", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Acao")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<DateTime>("DataHora")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Entidade")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("RegistroId")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("UsuarioEmail")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<Guid?>("UsuarioId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DataHora");
+
+                    b.ToTable("LogsAuditoria", (string)null);
+                });
+
             modelBuilder.Entity("SisTriage.Domain.Entities.Paciente", b =>
                 {
                     b.Property<Guid>("Id")

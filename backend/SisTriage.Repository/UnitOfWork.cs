@@ -17,6 +17,8 @@ namespace SisTriage.Repository
 
         public IFilaAtendimentoRepository Filas { get; }
 
+        public ILogAuditoriaRepository LogsAuditoria { get; }
+
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
@@ -24,6 +26,7 @@ namespace SisTriage.Repository
             Pacientes = new PacienteRepository(context);
             Triagens = new TriagemRepository(context);
             Filas = new FilaAtendimentoRepository(context);
+            LogsAuditoria = new LogAuditoriaRepository(context);
         }
 
         public async Task<int> SalvarAsync()

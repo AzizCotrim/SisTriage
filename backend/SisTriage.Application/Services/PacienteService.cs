@@ -2,6 +2,7 @@
 using SisTriage.Application.DTOs.Paciente;
 using SisTriage.Application.Services.Interfaces;
 using SisTriage.Domain.Entities;
+using SisTriage.Domain.Enums;
 using SisTriage.Domain.Exceptions;
 using SisTriage.Domain.Interfaces;
 
@@ -11,11 +12,13 @@ namespace SisTriage.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUsuarioLogado _usuarioLogado;
 
-        public PacienteService(IUnitOfWork unitOfWork, IMapper mapper)
+        public PacienteService(IUnitOfWork unitOfWork, IMapper mapper, IUsuarioLogado usuarioLogado)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _usuarioLogado = usuarioLogado;
         }
 
         public async Task<PacienteResponse> CriarAsync(CriarPacienteRequest request)
@@ -36,7 +39,24 @@ namespace SisTriage.Application.Services
         {
             var paciente = await _unitOfWork.Pacientes.GetByIdAsync(id);
 
-            return paciente == null ? null : _mapper.Map<PacienteResponse>(paciente);
+            if (paciente == null)
+                return null;
+
+            // O interceptor cobre apenas escritas. A consulta ao prontuário completo
+            // (CPF e alergias) é acesso a dado sensível e precisa ser registrada (LGPD).
+            _unitOfWork.LogsAuditoria.Add(new LogAuditoria
+            {
+                UsuarioId = _usuarioLogado.Id,
+                UsuarioEmail = _usuarioLogado.Email,
+                Acao = AcaoAuditoria.Consulta,
+                Entidade = nameof(Paciente),
+                RegistroId = paciente.Id.ToString(),
+                DataHora = DateTime.UtcNow
+            });
+
+            await _unitOfWork.SalvarAsync();
+
+            return _mapper.Map<PacienteResponse>(paciente);
         }
 
         public async Task<IEnumerable<PacienteListaResponse>> ListarAsync()

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SisTriage.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace SisTriage.Application.DTOs.Paciente
 {
@@ -15,9 +16,8 @@ namespace SisTriage.Application.DTOs.Paciente
         [Required]
         public DateTime DataNascimento { get; set; }
 
-        [Required]
-        [StringLength(9)]
-        public required string Sexo { get; set; }
+        [EnumDataType(typeof(Sexo), ErrorMessage = "Sexo inválido.")]
+        public required Sexo Sexo { get; set; }
 
         [Required]
         [StringLength(13)]

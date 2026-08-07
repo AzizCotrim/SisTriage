@@ -42,5 +42,20 @@ namespace SisTriage.API.Controllers
             var response = await _service.FinalizarAsync(id);
             return Ok(response);
         }
+
+        [HttpPost("{id}/nao-compareceu")]
+        [Authorize(Roles = "Enfermeiro,Medico")]
+        public async Task<ActionResult<FilaAtendimentoResponse>> RegistrarNaoComparecimento(Guid id)
+        {
+            var response = await _service.RegistrarNaoComparecimentoAsync(id);
+            return Ok(response);
+        }
+
+        [HttpGet("nao-atendidos")]
+        public async Task<ActionResult<IEnumerable<FilaAtendimentoResponse>>> ObterNaoAtendidos()
+        {
+            var response = await _service.ObterNaoAtendidosAsync();
+            return Ok(response);
+        }
     }
 }

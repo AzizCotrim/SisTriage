@@ -15,7 +15,18 @@ namespace SisTriage.API.ExceptionHandling
 
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
-            _logger.LogError(exception, "Erro não tratado: {Message}", exception.Message);
+            // Exceções de domínio são fluxo de negócio esperado, não falha do sistema.
+            // Registra apenas o tipo, sem a mensagem, que pode conter dado pessoal sensível (LGPD).
+            if (exception is DomainException)
+            {
+                _logger.LogWarning("Regra de negócio violada: {Excecao} em {Metodo} {Rota}",
+                    exception.GetType().Name, httpContext.Request.Method, httpContext.Request.Path);
+            }
+            else
+            {
+                _logger.LogError(exception, "Erro não tratado em {Metodo} {Rota}",
+                    httpContext.Request.Method, httpContext.Request.Path);
+            }
 
             var (statusCode, title, detail) = exception switch
             {

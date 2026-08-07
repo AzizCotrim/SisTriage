@@ -36,7 +36,7 @@ namespace SisTriage.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PacienteResponse>>> Listar()
+        public async Task<ActionResult<IEnumerable<PacienteListaResponse>>> Listar()
         {
             var response = await _service.ListarAsync();
             return Ok(response);

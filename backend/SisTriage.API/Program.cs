@@ -14,6 +14,7 @@ using SisTriage.Domain.Interfaces;
 using SisTriage.Infrastructure.Persistence;
 using SisTriage.Repository;
 using System.Text;
+using System.Text.Json.Serialization;
 
 const string FrontendCorsPolicy = "FrontendCorsPolicy";
 
@@ -73,7 +74,11 @@ builder.Services.AddAuthorization();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-builder.Services.AddControllers();
+// Enums trafegam como texto ("Amarelo") em vez de número, para que o cliente
+// da API não precise conhecer a ordem interna dos valores.
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

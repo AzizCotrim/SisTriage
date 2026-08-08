@@ -1,4 +1,5 @@
 using AutoMapper;
+using SisTriage.Application.DTOs.Common;
 using SisTriage.Application.DTOs.FilaAtendimento;
 using SisTriage.Application.Services.Interfaces;
 using SisTriage.Domain.Enums;
@@ -77,11 +78,18 @@ namespace SisTriage.Application.Services
             return _mapper.Map<FilaAtendimentoResponse>(filaAtendimento);
         }
 
-        public async Task<IEnumerable<FilaAtendimentoResponse>> ObterNaoAtendidosAsync()
+        public async Task<ResultadoPaginado<FilaAtendimentoResponse>> ObterNaoAtendidosAsync(PaginacaoRequest paginacao)
         {
-            var naoAtendidos = await _unitOfWork.Filas.ObterPorStatusAsync(StatusFila.NaoCompareceu);
+            var (itens, total) = await _unitOfWork.Filas.ObterPorStatusPaginadoAsync(
+                StatusFila.NaoCompareceu, paginacao.Pagina, paginacao.TamanhoPagina);
 
-            return _mapper.Map<IEnumerable<FilaAtendimentoResponse>>(naoAtendidos);
+            return new ResultadoPaginado<FilaAtendimentoResponse>
+            {
+                Itens = _mapper.Map<IEnumerable<FilaAtendimentoResponse>>(itens),
+                Pagina = paginacao.Pagina,
+                TamanhoPagina = paginacao.TamanhoPagina,
+                TotalRegistros = total
+            };
         }
     }
 }

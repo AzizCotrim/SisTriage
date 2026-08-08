@@ -1,4 +1,5 @@
-﻿using SisTriage.Application.DTOs.Usuario;
+﻿using SisTriage.Application.DTOs.Common;
+using SisTriage.Application.DTOs.Usuario;
 
 namespace SisTriage.Application.Services.Interfaces
 {
@@ -6,7 +7,7 @@ namespace SisTriage.Application.Services.Interfaces
     {
         Task<UsuarioResponse> CriarAsync(CriarUsuarioRequest request);
         Task<string> AutenticarAsync(LoginRequest request);
-        Task<IEnumerable<UsuarioResponse>> ListarAsync();
+        Task<ResultadoPaginado<UsuarioResponse>> ListarAsync(PaginacaoRequest paginacao);
         Task<UsuarioResponse?> ObterPorIdAsync(Guid id);
         Task<UsuarioResponse> AtualizarAsync(Guid id, AtualizarUsuarioRequest request);
     }

@@ -7,6 +7,6 @@ namespace SisTriage.Domain.Interfaces
     {
         Task<IEnumerable<FilaAtendimento>> ObterFilaOrdenadaPorPrioridadeAsync();
         Task<FilaAtendimento?> ObterComTriagemEPacienteAsync(Guid id);
-        Task<IEnumerable<FilaAtendimento>> ObterPorStatusAsync(StatusFila status);
+        Task<(IEnumerable<FilaAtendimento> Itens, int Total)> ObterPorStatusPaginadoAsync(StatusFila status, int pagina, int tamanhoPagina);
     }
 }

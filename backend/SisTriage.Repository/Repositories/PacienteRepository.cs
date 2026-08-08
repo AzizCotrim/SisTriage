@@ -18,5 +18,18 @@ namespace SisTriage.Repository.Repositories
         {
             return await _dbSet.FirstOrDefaultAsync(p => p.CPF == cpf);
         }
+
+        public async Task<(IEnumerable<Paciente> Itens, int Total)> ObterPaginadoAsync(int pagina, int tamanhoPagina)
+        {
+            var total = await _dbSet.CountAsync();
+
+            var itens = await _dbSet
+                .OrderBy(p => p.Nome)
+                .Skip((pagina - 1) * tamanhoPagina)
+                .Take(tamanhoPagina)
+                .ToListAsync();
+
+            return (itens, total);
+        }
     }
 }

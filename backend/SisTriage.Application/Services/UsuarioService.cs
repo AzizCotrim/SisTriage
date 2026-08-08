@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SisTriage.Application.DTOs.Common;
 using SisTriage.Application.DTOs.Usuario;
 using SisTriage.Application.Security;
 using SisTriage.Application.Services.Interfaces;
@@ -52,11 +53,17 @@ namespace SisTriage.Application.Services
             return _jwtTokenGenerator.GerarToken(usuario);
         }
 
-        public async Task<IEnumerable<UsuarioResponse>> ListarAsync()
+        public async Task<ResultadoPaginado<UsuarioResponse>> ListarAsync(PaginacaoRequest paginacao)
         {
-            var usuarios = await _unitOfWork.Usuarios.GetAllAsync();
+            var (itens, total) = await _unitOfWork.Usuarios.ObterPaginadoAsync(paginacao.Pagina, paginacao.TamanhoPagina);
 
-            return _mapper.Map<IEnumerable<UsuarioResponse>>(usuarios);
+            return new ResultadoPaginado<UsuarioResponse>
+            {
+                Itens = _mapper.Map<IEnumerable<UsuarioResponse>>(itens),
+                Pagina = paginacao.Pagina,
+                TamanhoPagina = paginacao.TamanhoPagina,
+                TotalRegistros = total
+            };
         }
 
         public async Task<UsuarioResponse?> ObterPorIdAsync(Guid id)

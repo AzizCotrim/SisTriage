@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SisTriage.Application.DTOs.Common;
 using SisTriage.Application.DTOs.Paciente;
 using SisTriage.Application.Services.Interfaces;
 using SisTriage.Domain.Entities;
@@ -59,11 +60,17 @@ namespace SisTriage.Application.Services
             return _mapper.Map<PacienteResponse>(paciente);
         }
 
-        public async Task<IEnumerable<PacienteListaResponse>> ListarAsync()
+        public async Task<ResultadoPaginado<PacienteListaResponse>> ListarAsync(PaginacaoRequest paginacao)
         {
-            var pacientes = await _unitOfWork.Pacientes.GetAllAsync();
+            var (itens, total) = await _unitOfWork.Pacientes.ObterPaginadoAsync(paginacao.Pagina, paginacao.TamanhoPagina);
 
-            return _mapper.Map<IEnumerable<PacienteListaResponse>>(pacientes);
+            return new ResultadoPaginado<PacienteListaResponse>
+            {
+                Itens = _mapper.Map<IEnumerable<PacienteListaResponse>>(itens),
+                Pagina = paginacao.Pagina,
+                TamanhoPagina = paginacao.TamanhoPagina,
+                TotalRegistros = total
+            };
         }
 
         public async Task<PacienteResponse> AtualizarAsync(Guid id, AtualizarPacienteRequest request)

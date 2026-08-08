@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SisTriage.Application.DTOs.Common;
 using SisTriage.Application.DTOs.Paciente;
 using SisTriage.Application.Services.Interfaces;
 
@@ -36,9 +37,9 @@ namespace SisTriage.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PacienteListaResponse>>> Listar()
+        public async Task<ActionResult<ResultadoPaginado<PacienteListaResponse>>> Listar([FromQuery] PaginacaoRequest paginacao)
         {
-            var response = await _service.ListarAsync();
+            var response = await _service.ListarAsync(paginacao);
             return Ok(response);
         }
 

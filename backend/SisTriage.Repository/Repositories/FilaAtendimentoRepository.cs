@@ -33,14 +33,21 @@ namespace SisTriage.Repository.Repositories
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
 
-        public async Task<IEnumerable<FilaAtendimento>> ObterPorStatusAsync(StatusFila status)
+        public async Task<(IEnumerable<FilaAtendimento> Itens, int Total)> ObterPorStatusPaginadoAsync(StatusFila status, int pagina, int tamanhoPagina)
         {
-            return await _dbSet
+            var consulta = _dbSet.Where(f => f.Status == status);
+
+            var total = await consulta.CountAsync();
+
+            var itens = await consulta
                 .Include(f => f.Triagem)
                     .ThenInclude(t => t.Paciente)
-                .Where(f => f.Status == status)
                 .OrderByDescending(f => f.DataEntrada)
+                .Skip((pagina - 1) * tamanhoPagina)
+                .Take(tamanhoPagina)
                 .ToListAsync();
+
+            return (itens, total);
         }
     }
 }

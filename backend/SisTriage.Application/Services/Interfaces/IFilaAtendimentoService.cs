@@ -1,4 +1,5 @@
-﻿using SisTriage.Application.DTOs.FilaAtendimento;
+﻿using SisTriage.Application.DTOs.Common;
+using SisTriage.Application.DTOs.FilaAtendimento;
 
 namespace SisTriage.Application.Services.Interfaces
 {
@@ -8,6 +9,6 @@ namespace SisTriage.Application.Services.Interfaces
         Task<FilaAtendimentoResponse?> ChamarProximoAsync();
         Task<FilaAtendimentoResponse> FinalizarAsync(Guid filaAtendimentoId);
         Task<FilaAtendimentoResponse> RegistrarNaoComparecimentoAsync(Guid filaAtendimentoId);
-        Task<IEnumerable<FilaAtendimentoResponse>> ObterNaoAtendidosAsync();
+        Task<ResultadoPaginado<FilaAtendimentoResponse>> ObterNaoAtendidosAsync(PaginacaoRequest paginacao);
     }
 }

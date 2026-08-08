@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SisTriage.Application.DTOs.Common;
 using SisTriage.Application.DTOs.FilaAtendimento;
 using SisTriage.Application.Services.Interfaces;
 
@@ -52,9 +53,9 @@ namespace SisTriage.API.Controllers
         }
 
         [HttpGet("nao-atendidos")]
-        public async Task<ActionResult<IEnumerable<FilaAtendimentoResponse>>> ObterNaoAtendidos()
+        public async Task<ActionResult<ResultadoPaginado<FilaAtendimentoResponse>>> ObterNaoAtendidos([FromQuery] PaginacaoRequest paginacao)
         {
-            var response = await _service.ObterNaoAtendidosAsync();
+            var response = await _service.ObterNaoAtendidosAsync(paginacao);
             return Ok(response);
         }
     }

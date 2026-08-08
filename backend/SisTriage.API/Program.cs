@@ -48,6 +48,7 @@ builder.Services.AddScoped<IPacienteService, PacienteService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<ITriagemService, TriagemService>();
 builder.Services.AddScoped<IFilaAtendimentoService, FilaAtendimentoService>();
+builder.Services.AddScoped<IIndicadorService, IndicadorService>();
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();

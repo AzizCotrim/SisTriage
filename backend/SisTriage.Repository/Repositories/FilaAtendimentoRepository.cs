@@ -33,6 +33,14 @@ namespace SisTriage.Repository.Repositories
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
 
+        public async Task<IEnumerable<FilaAtendimento>> ObterPorPeriodoAsync(DateTime inicio, DateTime fim)
+        {
+            return await _dbSet
+                .Include(f => f.Triagem)
+                .Where(f => f.DataEntrada >= inicio && f.DataEntrada <= fim)
+                .ToListAsync();
+        }
+
         public async Task<(IEnumerable<FilaAtendimento> Itens, int Total)> ObterPorStatusPaginadoAsync(StatusFila status, int pagina, int tamanhoPagina)
         {
             var consulta = _dbSet.Where(f => f.Status == status);

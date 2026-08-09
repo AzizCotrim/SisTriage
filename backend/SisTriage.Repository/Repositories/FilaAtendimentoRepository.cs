@@ -14,14 +14,17 @@ namespace SisTriage.Repository.Repositories
 
         public async Task<IEnumerable<FilaAtendimento>> ObterFilaOrdenadaPorPrioridadeAsync()
         {
+            // Inclui quem já foi chamado: o paciente em atendimento precisa continuar
+            // visível no painel para que seja possível finalizar ou registrar ausência.
             var fila = await _dbSet
                 .Include(f => f.Triagem)
                     .ThenInclude(t => t.Paciente)
-                .Where(f => f.Status == StatusFila.Aguardando)
+                .Where(f => f.Status == StatusFila.Aguardando || f.Status == StatusFila.Chamado)
                 .ToListAsync();
 
             return fila
-                .OrderBy(f => f.Triagem.Classificacao.TempoMaximoEsperaMinutos())
+                .OrderBy(f => f.Status == StatusFila.Chamado ? 0 : 1)
+                .ThenBy(f => f.Triagem.Classificacao.TempoMaximoEsperaMinutos())
                 .ThenBy(f => f.DataEntrada);
         }
 

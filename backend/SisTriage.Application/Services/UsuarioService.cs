@@ -15,13 +15,20 @@ namespace SisTriage.Application.Services
         private readonly IMapper _mapper;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        private readonly IUsuarioLogado _usuarioLogado;
 
-        public UsuarioService(IUnitOfWork unitOfWork, IMapper mapper, IPasswordHasher passwordHasher, IJwtTokenGenerator jwtTokenGenerator)
+        public UsuarioService(
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            IPasswordHasher passwordHasher,
+            IJwtTokenGenerator jwtTokenGenerator,
+            IUsuarioLogado usuarioLogado)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
             _jwtTokenGenerator = jwtTokenGenerator;
+            _usuarioLogado = usuarioLogado;
         }
 
         public async Task<UsuarioResponse> CriarAsync(CriarUsuarioRequest request)
@@ -78,6 +85,14 @@ namespace SisTriage.Application.Services
             var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
             if (usuario == null)
                 throw new RecursoNaoEncontradoException("Usuário não encontrado.");
+
+            // Impede que o próprio usuário eleve o seu perfil ou reative o seu acesso.
+            // Sem isso, quem pode administrar usuários poderia se autopromover.
+            var alterandoProprioAcesso = _usuarioLogado.Id == id
+                && (usuario.Perfil != request.Perfil || usuario.Ativo != request.Ativo);
+
+            if (alterandoProprioAcesso)
+                throw new OperacaoInvalidaException("Não é possível alterar o próprio perfil ou a própria situação de acesso.");
 
             usuario.Nome = request.Nome;
             usuario.Perfil = request.Perfil;

@@ -58,7 +58,7 @@ namespace SisTriage.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Recepcionista")]
         public async Task<ActionResult<UsuarioResponse>> Atualizar(Guid id, AtualizarUsuarioRequest request)
         {
             var response = await _service.AtualizarAsync(id, request);

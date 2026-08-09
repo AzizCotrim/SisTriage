@@ -30,7 +30,9 @@ namespace SisTriage.Application.Services
         {
             var fila = await _unitOfWork.Filas.ObterFilaOrdenadaPorPrioridadeAsync();
 
-            var proximo = fila.FirstOrDefault();
+            // A fila agora também traz quem já foi chamado, então o próximo precisa
+            // ser buscado explicitamente entre os que ainda aguardam.
+            var proximo = fila.FirstOrDefault(f => f.Status == StatusFila.Aguardando);
             if (proximo == null)
                 return null;
 

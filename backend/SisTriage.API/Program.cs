@@ -85,6 +85,13 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+// Aplica as migrations pendentes na subida. Isso permite que o ambiente
+// suba inteiro com um comando só, sem ninguém precisar rodar 'dotnet ef'.
+using (var escopo = app.Services.CreateScope())
+{
+    await escopo.ServiceProvider.GetRequiredService<AppDbContext>().Database.MigrateAsync();
+}
+
 await DbSeeder.SeedUsuarioInicialAsync(app.Services);
 
 app.UseExceptionHandler();

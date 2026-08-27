@@ -1,0 +1,29 @@
+# .NET
+bin/
+obj/
+.vs/
+*.user
+*.suo
+TestResults/
+
+# Segredos / config local
+appsettings.Development.json
+appsettings.*.local.json
+*.pfx
+
+# Node / React / Vite
+node_modules/
+dist/
+.vite/
+npm-debug.log*
+
+# Env
+.env
+.env.local
+
+# SO
+.DS_Store
+Thumbs.db
+
+# Prints/temp acidentais
+*{*}*.png

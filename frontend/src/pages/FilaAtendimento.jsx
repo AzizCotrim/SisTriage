@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
 import { apiRequest } from '../services/api'
 
+const coresClassificacao = {
+  Vermelho: '#e53935',
+  Laranja: '#fb8c00',
+  Amarelo: '#fdd835',
+  Verde: '#43a047',
+  Azul: '#1e88e5',
+}
+
 export default function FilaAtendimento() {
   const [fila, setFila] = useState([])
   const [naoAtendidos, setNaoAtendidos] = useState([])
@@ -85,8 +93,10 @@ export default function FilaAtendimento() {
       <div style={styles.header}>
         <h1>Fila de Atendimento</h1>
 
-        <button onClick={chamarProximo}>
-          Chamar próximo
+        <button
+        onClick={chamarProximo}
+        style={styles.botao}>
+        Chamar próximo
         </button>
       </div>
 
@@ -101,28 +111,33 @@ export default function FilaAtendimento() {
       <table style={styles.tabela}>
         <thead>
           <tr>
-            <th>Paciente</th>
-            <th>Classificação</th>
-            <th>Status</th>
-            <th>Espera</th>
-            <th>Ações</th>
+            <th style={styles.th}>Paciente</th> 
+            <th style={styles.th}>Classificação</th> 
+            <th style={styles.th}>Status</th> 
+            <th style={styles.th}>Espera</th> 
+            <th style={styles.th}>Ações</th>
           </tr>
         </thead>
 
         <tbody>
           {fila.map((item) => (
             <tr key={item.id}>
-              <td>{item.pacienteNome}</td>
+              <td style={styles.td}>{item.pacienteNome}</td>
 
-              <td>{item.classificacao}</td>
+              <td style={styles.td}>
+                <span style={styles.linhaClassificacao}>
+                  <Bolinha cor={coresClassificacao[item.classificacao]} />
+                  {item.classificacao}
+                </span>
+              </td>
 
-              <td>{item.status}</td>
+              <td style={styles.td}>{item.status}</td>
 
-              <td>
+              <td style={styles.td}>
                 {item.tempoEsperaMinutos}
               </td>
 
-              <td>
+              <td style={styles.td}>
                 {item.status === 'Chamado' && (
                   <>
                     <button
@@ -150,22 +165,41 @@ export default function FilaAtendimento() {
 
       <hr />
 
-      <button onClick={carregarNaoAtendidos}>
+      <button
+        onClick={carregarNaoAtendidos}
+        style={styles.botao}>
         Ver não atendidos
-      </button>
+        </button>
 
       {naoAtendidos.length > 0 && (
         <>
           <h2>Não compareceram</h2>
 
           {naoAtendidos.map((item) => (
-            <p key={item.id}>
+            <p key={item.id} style={styles.linhaClassificacao}>
+              <Bolinha cor={coresClassificacao[item.classificacao]} />
               {item.pacienteNome} - {item.classificacao}
             </p>
           ))}
         </>
       )}
     </div>
+  )
+}
+
+function Bolinha({ cor }) {
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        width: 10,
+        height: 10,
+        borderRadius: '50%',
+        backgroundColor: cor || '#bbb',
+        marginRight: 8,
+        flexShrink: 0,
+      }}
+    />
   )
 }
 
@@ -182,4 +216,35 @@ const styles = {
     background: '#fff',
     borderCollapse: 'collapse',
   },
+    th: {
+    textAlign: 'left',
+    padding: '12px',
+    borderBottom: '1px solid #ddd',
+    fontWeight: 'bold',
+  },
+
+  td: {
+    textAlign: 'left',
+    padding: '12px',
+    borderBottom: '1px solid #eee',
+  },
+
+  botao: {
+  background: '#245b87',
+  color: '#fff',
+  border: 'none',
+  padding: '12px 20px',
+  borderRadius: 8,
+  fontSize: 15,
+  fontWeight: 'bold',
+  cursor: 'pointer',
+  boxShadow: '0 3px 8px rgba(0, 0, 0, 0.15)',
+  transition: 'all 0.2s ease',
+},
+
+  linhaClassificacao: {
+    display: 'inline-flex',
+    alignItems: 'center',
+  },
+  
 }

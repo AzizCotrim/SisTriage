@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { apiRequest } from '../services/api'
 
 const classificacoes = [
-  'Vermelho',
-  'Laranja',
-  'Amarelo',
-  'Verde',
-  'Azul',
+  { valor: 'Vermelho', cor: '#e53935' },
+  { valor: 'Laranja', cor: '#fb8c00' },
+  { valor: 'Amarelo', cor: '#fdd835' },
+  { valor: 'Verde', cor: '#43a047' },
+  { valor: 'Azul', cor: '#1e88e5' },
 ]
 
 export default function Triagem() {
@@ -126,18 +126,10 @@ export default function Triagem() {
 
         <label>Classificação de risco</label>
 
-        <select
-          value={form.classificacao}
-          onChange={(e) =>
-            alterar('classificacao', e.target.value)
-          }
-        >
-          {classificacoes.map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
+        <SeletorClassificacao
+          valor={form.classificacao}
+          onChange={(v) => alterar('classificacao', v)}
+        />
 
         <label>Queixa principal</label>
 
@@ -152,7 +144,7 @@ export default function Triagem() {
         <h3>Sinais vitais</h3>
 
         <Campo
-          label="Pressão sistólica"
+          label="Pressão sistólica "
           value={form.pressaoArterialSistolica}
           onChange={(v) =>
             alterar('pressaoArterialSistolica', v)
@@ -160,7 +152,7 @@ export default function Triagem() {
         />
 
         <Campo
-          label="Pressão diastólica"
+          label="Pressão diastólica "
           value={form.pressaoArterialDiastolica}
           onChange={(v) =>
             alterar('pressaoArterialDiastolica', v)
@@ -168,7 +160,7 @@ export default function Triagem() {
         />
 
         <Campo
-          label="Frequência cardíaca"
+          label="Frequência cardíaca "
           value={form.frequenciaCardiaca}
           onChange={(v) =>
             alterar('frequenciaCardiaca', v)
@@ -176,7 +168,7 @@ export default function Triagem() {
         />
 
         <Campo
-          label="Frequência respiratória"
+          label="Frequência respiratória "
           value={form.frequenciaRespiratoria}
           onChange={(v) =>
             alterar('frequenciaRespiratoria', v)
@@ -184,31 +176,31 @@ export default function Triagem() {
         />
 
         <Campo
-          label="Temperatura"
+          label="Temperatura "
           value={form.temperatura}
           onChange={(v) => alterar('temperatura', v)}
         />
 
         <Campo
-          label="SpO2"
+          label="SpO2 "
           value={form.spO2}
           onChange={(v) => alterar('spO2', v)}
         />
 
         <Campo
-          label="Escala de dor"
+          label="Escala de dor "
           value={form.escalaDor}
           onChange={(v) => alterar('escalaDor', v)}
         />
 
         <Campo
-          label="Glicemia"
+          label="Glicemia "
           value={form.glicemia}
           onChange={(v) => alterar('glicemia', v)}
         />
 
         <Campo
-          label="Peso"
+          label="Peso "
           value={form.peso}
           onChange={(v) => alterar('peso', v)}
         />
@@ -226,6 +218,86 @@ export default function Triagem() {
         <p style={{ color: 'red' }}>{erro}</p>
       )}
     </div>
+  )
+}
+
+function SeletorClassificacao({ valor, onChange }) {
+  const [aberto, setAberto] = useState(false)
+  const containerRef = useRef(null)
+  const atual = classificacoes.find((c) => c.valor === valor)
+
+  useEffect(() => {
+    function aoClicarFora(e) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target)
+      ) {
+        setAberto(false)
+      }
+    }
+
+    document.addEventListener('mousedown', aoClicarFora)
+    return () =>
+      document.removeEventListener('mousedown', aoClicarFora)
+  }, [])
+
+  return (
+    <div ref={containerRef} style={styles.seletorContainer}>
+      <button
+        type="button"
+        onClick={() => setAberto((v) => !v)}
+        style={styles.seletorBotao}
+      >
+        <span style={styles.linha}>
+          <Bolinha cor={atual?.cor} />
+          {atual?.valor}
+        </span>
+
+        <span style={styles.seta}>{aberto ? '▲' : '▼'}</span>
+      </button>
+
+      {aberto && (
+        <ul style={styles.listaOpcoes}>
+          {classificacoes.map((item) => (
+            <li key={item.valor}>
+              <button
+                type="button"
+                onClick={() => {
+                  onChange(item.valor)
+                  setAberto(false)
+                }}
+                style={{
+                  ...styles.opcaoBotao,
+                  background:
+                    item.valor === valor
+                      ? '#f0f0f0'
+                      : 'transparent',
+                }}
+              >
+                <Bolinha cor={item.cor} />
+                {item.valor}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+function Bolinha({ cor }) {
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        width: 12,
+        height: 12,
+        borderRadius: '50%',
+        backgroundColor: cor,
+        marginRight: 8,
+        flexShrink: 0,
+      }}
+    />
   )
 }
 
@@ -254,5 +326,51 @@ const styles = {
     background: '#fff',
     padding: 25,
     borderRadius: 10,
+  },
+  seletorContainer: {
+    position: 'relative',
+  },
+  seletorBotao: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '8px 12px',
+    borderRadius: 6,
+    border: '1px solid #ccc',
+    background: '#fff',
+    cursor: 'pointer',
+  },
+  linha: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  seta: {
+    fontSize: 10,
+    color: '#666',
+  },
+  listaOpcoes: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    marginTop: 4,
+    listStyle: 'none',
+    padding: 4,
+    background: '#fff',
+    border: '1px solid #ccc',
+    borderRadius: 6,
+    boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+    zIndex: 10,
+  },
+  opcaoBotao: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '8px 10px',
+    border: 'none',
+    borderRadius: 4,
+    cursor: 'pointer',
+    textAlign: 'left',
   },
 }

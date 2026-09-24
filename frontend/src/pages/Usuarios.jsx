@@ -147,20 +147,20 @@ export default function Usuarios() {
       <table style={styles.tabela}>
         <thead>
           <tr>
-            <th>Nome</th>
-            <th>E-mail</th>
-            <th>Perfil</th>
-            <th>Ativo</th>
+            <th style={styles.th}>Nome</th>
+            <th style={styles.th}>E-mail</th>
+            <th style={styles.th}>Perfil</th>
+            <th style={styles.th}>Ativo</th>
           </tr>
         </thead>
 
         <tbody>
           {usuarios.map((usuario) => (
             <tr key={usuario.id}>
-              <td>{usuario.nome}</td>
-              <td>{usuario.email}</td>
-              <td>{usuario.perfil}</td>
-              <td>
+              <td style={styles.td}>{usuario.nome}</td>
+              <td style={styles.td}>{usuario.email}</td>
+              <td style={styles.td}>{usuario.perfil}</td>
+              <td style={styles.td}>
                 {usuario.ativo ? 'Sim' : 'Não'}
               </td>
             </tr>
@@ -186,5 +186,18 @@ const styles = {
     width: '100%',
     background: '#fff',
     borderCollapse: 'collapse',
+  },
+
+  th: {
+    textAlign: 'left',
+    padding: '12px',
+    borderBottom: '1px solid #ddd',
+    fontWeight: 'bold',
+  },
+
+  td: {
+    textAlign: 'left',
+    padding: '12px',
+    borderBottom: '1px solid #eee',
   },
 }

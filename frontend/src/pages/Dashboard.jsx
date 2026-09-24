@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
 import { apiRequest } from '../services/api'
 
+const coresClassificacao = {
+  Vermelho: '#e53935',
+  Laranja: '#fb8c00',
+  Amarelo: '#fdd835',
+  Verde: '#43a047',
+  Azul: '#1e88e5',
+}
+
 export default function Dashboard() {
   const [fila, setFila] = useState([])
   const [indicadores, setIndicadores] = useState(null)
@@ -32,22 +40,22 @@ export default function Dashboard() {
 
       <div style={styles.cards}>
         <Card
-          titulo="Total"
+          titulo="Total: "
           valor={indicadores?.totalRegistros ?? 0}
         />
 
         <Card
-          titulo="Atendidos"
+          titulo="Atendidos: "
           valor={indicadores?.atendidos ?? 0}
         />
 
         <Card
-          titulo="Na fila"
+          titulo="Na fila: "
           valor={indicadores?.aindaNaFila ?? fila.length}
         />
 
         <Card
-          titulo="Não compareceram"
+          titulo="Não compareceram: "
           valor={indicadores?.naoComparecimentos ?? 0}
         />
       </div>
@@ -60,20 +68,27 @@ export default function Dashboard() {
         <table style={styles.tabela}>
           <thead>
             <tr>
-              <th>Paciente</th>
-              <th>Classificação</th>
-              <th>Status</th>
-              <th>Tempo de espera</th>
+              <th style={styles.th}>Paciente</th>
+              <th style={styles.th}>Classificação</th>
+              <th style={styles.th}>Status</th>
+              <th style={styles.th}>Tempo de espera</th>
             </tr>
           </thead>
 
           <tbody>
             {fila.map((item) => (
               <tr key={item.id}>
-                <td>{item.pacienteNome}</td>
-                <td>{item.classificacao}</td>
-                <td>{item.status}</td>
-                <td>{item.tempoEsperaMinutos}</td>
+                <td style={styles.td}>{item.pacienteNome}</td>
+                <td style={styles.td}>
+                  <span style={styles.linhaClassificacao}>
+                    <Bolinha cor={coresClassificacao[item.classificacao]} />
+                    {item.classificacao}
+                  </span>
+                </td>
+                <td style={styles.td}>{item.status}</td>
+                <td style={styles.td}>
+                  {item.tempoEsperaMinutos} minutos
+                </td>
               </tr>
             ))}
           </tbody>
@@ -89,6 +104,22 @@ function Card({ titulo, valor }) {
       <span>{titulo}</span>
       <strong>{valor}</strong>
     </div>
+  )
+}
+
+function Bolinha({ cor }) {
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        width: 10,
+        height: 10,
+        borderRadius: '50%',
+        backgroundColor: cor || '#bbb',
+        marginRight: 8,
+        flexShrink: 0,
+      }}
+    />
   )
 }
 
@@ -111,5 +142,25 @@ const styles = {
     width: '100%',
     background: '#fff',
     borderCollapse: 'collapse',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+
+  th: {
+    textAlign: 'left',
+    padding: '12px',
+    borderBottom: '1px solid #ddd',
+    fontWeight: 'bold',
+  },
+
+  td: {
+    textAlign: 'left',
+    padding: '12px',
+    borderBottom: '1px solid #eee',
+  },
+
+  linhaClassificacao: {
+    display: 'inline-flex',
+    alignItems: 'center',
   },
 }

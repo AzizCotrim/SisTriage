@@ -29,8 +29,10 @@ export default function Pacientes({ abrirCadastro }) {
           <p>Cadastro e consulta de pacientes.</p>
         </div>
 
-        <button onClick={abrirCadastro}>
-          + Novo paciente
+        <button
+        onClick={abrirCadastro}
+        style={styles.botaoNovoPaciente}>
+        + Novo paciente
         </button>
       </div>
 
@@ -39,18 +41,18 @@ export default function Pacientes({ abrirCadastro }) {
       <table style={styles.tabela}>
         <thead>
           <tr>
-            <th>Nome</th>
-            <th>CPF</th>
-            <th>Sexo</th>
+            <th style={styles.th}>Nome</th>
+            <th style={styles.th}>CPF</th>
+            <th style={styles.th}>Sexo</th>
           </tr>
         </thead>
 
         <tbody>
           {pacientes.map((paciente) => (
             <tr key={paciente.id}>
-              <td>{paciente.nome}</td>
-              <td>{paciente.cpf}</td>
-              <td>{paciente.sexo}</td>
+              <td style={styles.td}>{paciente.nome}</td>
+              <td style={styles.td}>{paciente.cpf}</td>
+              <td style={styles.td}>{paciente.sexo}</td>
             </tr>
           ))}
         </tbody>
@@ -72,4 +74,25 @@ const styles = {
     background: '#fff',
     borderCollapse: 'collapse',
   },
+  th: { textAlign: 'left', 
+    padding: '12px', 
+    borderBottom: '1px solid #ddd', 
+    fontWeight: 'bold', 
+  },
+  td: { textAlign: 'left', 
+    padding: '12px', 
+    borderBottom: '1px solid #eee', 
+  },
+  botaoNovoPaciente: {
+  background: '#245b87',
+  color: '#fff',
+  border: 'none',
+  padding: '12px 20px',
+  borderRadius: 8,
+  fontSize: 15,
+  fontWeight: 'bold',
+  cursor: 'pointer',
+  boxShadow: '0 3px 8px rgba(0, 0, 0, 0.15)',
+  transition: 'all 0.2s ease',
+},
 }

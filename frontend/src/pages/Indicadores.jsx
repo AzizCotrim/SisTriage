@@ -5,6 +5,15 @@ export default function Indicadores() {
   const [dados, setDados] = useState(null)
   const [erro, setErro] = useState('')
 
+  const coresClassificacao = {
+  Vermelho: '#e53935',
+  Laranja: '#fb8c00',
+  Amarelo: '#fdd835',
+  Verde: '#43a047',
+  Azul: '#1e88e5',
+}
+
+
   useEffect(() => {
     carregar()
   }, [])
@@ -32,42 +41,42 @@ export default function Indicadores() {
 
       <div style={styles.cards}>
         <Card
-          titulo="Total de registros"
+          titulo="Total de registros: "
           valor={dados.totalRegistros}
         />
 
         <Card
-          titulo="Atendidos"
+          titulo="Atendidos: "
           valor={dados.atendidos}
         />
 
         <Card
-          titulo="Não comparecimentos"
+          titulo="Não comparecimentos: "
           valor={dados.naoComparecimentos}
         />
 
         <Card
-          titulo="Ainda na fila"
+          titulo="Ainda na fila: "
           valor={dados.aindaNaFila}
         />
 
         <Card
-          titulo="Tempo médio"
+          titulo="Tempo médio: "
           valor={`${dados.tempoMedioEsperaMinutos} min`}
         />
 
         <Card
-          titulo="Dentro do tempo"
+          titulo="Dentro do tempo: "
           valor={dados.dentroDoTempo}
         />
 
         <Card
-          titulo="Fora do tempo"
+          titulo="Fora do tempo: "
           valor={dados.foraDoTempo}
         />
 
         <Card
-          titulo="% dentro do tempo"
+          titulo="% dentro do tempo: "
           valor={`${dados.percentualDentroDoTempo}%`}
         />
       </div>
@@ -77,28 +86,33 @@ export default function Indicadores() {
       <table style={styles.tabela}>
         <thead>
           <tr>
-            <th>Classificação</th>
-            <th>Quantidade</th>
-            <th>Tempo máximo</th>
-            <th>Tempo médio</th>
-            <th>Dentro</th>
-            <th>Fora</th>
+            <th style={styles.th}>Classificação</th>
+            <th style={styles.th}>Quantidade</th>
+            <th style={styles.th}>Tempo máximo</th>
+            <th style={styles.th}>Tempo médio</th>
+            <th style={styles.th}>Dentro</th>
+            <th style={styles.th}>Fora</th>
           </tr>
         </thead>
 
         <tbody>
           {dados.porClassificacao?.map((item) => (
             <tr key={item.classificacao}>
-              <td>{item.classificacao}</td>
-              <td>{item.quantidade}</td>
-              <td>
+              <td style={styles.td}>
+  <span style={styles.linhaClassificacao}>
+    <Bolinha cor={coresClassificacao[item.classificacao]} />
+    {item.classificacao}
+  </span>
+</td>
+              <td style={styles.td}>{item.quantidade}</td>
+              <td style={styles.td}>
                 {item.tempoMaximoEsperaMinutos} min
               </td>
-              <td>
+              <td style={styles.td}>
                 {item.tempoMedioEsperaMinutos} min
               </td>
-              <td>{item.dentroDoTempo}</td>
-              <td>{item.foraDoTempo}</td>
+              <td style={styles.td}>{item.dentroDoTempo}</td>
+              <td style={styles.td}>{item.foraDoTempo}</td>
             </tr>
           ))}
         </tbody>
@@ -113,6 +127,22 @@ function Card({ titulo, valor }) {
       <span>{titulo}</span>
       <strong>{valor}</strong>
     </div>
+  )
+}
+
+function Bolinha({ cor }) {
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        width: 10,
+        height: 10,
+        borderRadius: '50%',
+        backgroundColor: cor || '#bbb',
+        marginRight: 8,
+        flexShrink: 0,
+      }}
+    />
   )
 }
 
@@ -136,4 +166,21 @@ const styles = {
     background: '#fff',
     borderCollapse: 'collapse',
   },
+
+  th: {
+    textAlign: 'left',
+    padding: '12px',
+    borderBottom: '1px solid #ddd',
+    fontWeight: 'bold',
+  },
+
+  td: {
+    textAlign: 'left',
+    padding: '12px',
+    borderBottom: '1px solid #eee',
+  },
+  linhaClassificacao: {
+  display: 'inline-flex',
+  alignItems: 'center',
+},
 }

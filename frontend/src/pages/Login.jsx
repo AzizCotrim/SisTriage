@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { apiRequest, setToken } from '../services/api'
 
 export default function Login({ onLogin }) {
@@ -6,6 +6,16 @@ export default function Login({ onLogin }) {
   const [senha, setSenha] = useState('')
   const [erro, setErro] = useState('')
   const [carregando, setCarregando] = useState(false)
+
+  useEffect(() => {
+    document.body.style.margin = '0'
+    document.body.style.padding = '0'
+
+    return () => {
+      document.body.style.margin = ''
+      document.body.style.padding = ''
+    }
+  }, [])
 
   async function fazerLogin(event) {
     event.preventDefault()
@@ -86,14 +96,17 @@ export default function Login({ onLogin }) {
 
 const estilos = {
   container: {
-    minHeight: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    background: 'linear-gradient(135deg, #0E7C86, #0F1B2D)',
-    fontFamily: 'Arial, sans-serif',
-    padding: 20,
-  },
+  minHeight: '100vh',
+  width: '100vw',
+  margin: 0,
+  padding: 20,
+  boxSizing: 'border-box',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  background: 'linear-gradient(135deg, #0E7C86, #0F1B2D)',
+  fontFamily: 'Arial, sans-serif',
+},
 
   card: {
     width: '100%',
@@ -176,4 +189,6 @@ const estilos = {
     color: '#4B5A62',
     lineHeight: 1.6,
   },
+
+
 }

@@ -1,6 +1,14 @@
+import { useEffect } from 'react'
 import { removeToken } from '../services/api'
 
 export default function Layout({ pagina, setPagina, children }) {
+  useEffect(() => {
+    document.body.style.margin = '0'
+
+    return () => {
+      document.body.style.margin = ''
+    }
+  }, [])
   function sair() {
     removeToken()
     window.location.reload()
@@ -93,3 +101,4 @@ const styles = {
     overflow: 'auto',
   },
 }
+

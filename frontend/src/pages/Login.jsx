@@ -82,13 +82,7 @@ export default function Login({ onLogin }) {
 
         {erro && <p style={estilos.erro}>{erro}</p>}
 
-        <div style={estilos.dica}>
-          <strong>Usuário inicial</strong>
-          <br />
-          recepcao@sistriage.local
-          <br />
-          Sistriage@123
-        </div>
+      
       </div>
     </main>
   )
@@ -180,15 +174,7 @@ const estilos = {
     fontSize: 13,
   },
 
-  dica: {
-    marginTop: 22,
-    padding: 12,
-    background: '#F2F6F5',
-    borderRadius: 8,
-    fontSize: 12,
-    color: '#4B5A62',
-    lineHeight: 1.6,
-  },
+
 
 
 }

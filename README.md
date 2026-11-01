@@ -1,7 +1,7 @@
 # SisTriage
 
 Sistema informatizado de triagem e gestão de filas para Unidades Básicas de Saúde,
-baseado no Protocolo de Manchester.
+baseado no Protocolo de Manchester. TCC elaborado pelos alunos da UNIP EAD (Anna Carolina Pereira Alves, Aziz Messias Mariano Cotrim, Thomas Li Hong Da)
 
 ## Como rodar
 
